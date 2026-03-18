@@ -18,6 +18,21 @@ The goal is to separate **exploration**, **normal workspace editing**, and **exp
 
 ## Permission model
 
+### Plugin interoperability
+
+`cx-work` and `cx-omni` intentionally do **not** set a top-level permission of `"*": "deny"`.
+
+Why:
+
+- A blanket `*` deny hides tool IDs registered by other plugins before execution.
+- In practice this made tools from plugins like `opencode-planpilot`, `opencode-workbench`, and `opencode-web-preview` disappear.
+
+These two agents still explicitly deny selected built-in capabilities (`webfetch`, `websearch`, `codesearch`, `skill`, etc.) and keep their bash guardrails.
+
+`cx-explore` now uses `"*": "ask"` (instead of blanket deny), then explicitly allows research/search tools and explicitly denies non-research capabilities (`task`, `edit`, `apply_patch`, `planpilot`, `workbench`, `web_preview_helper`, `github-triage`, etc.).
+
+This keeps plugin search tools visible/usable while preserving a read-first posture.
+
 ### Permission words
 
 | Word    | Meaning                                                              |
@@ -143,10 +158,11 @@ Use it when you need to:
 | Area                                    | Setting          | Practical effect                                                                        |
 | --------------------------------------- | ---------------- | --------------------------------------------------------------------------------------- |
 | Mode                                    | `all`            | Can be used broadly rather than only as a primary implementation agent.                 |
+| Top-level `*`                           | `ask`            | Unknown/new plugin tools stay visible and require approval unless explicitly allowed/denied. |
 | `external_directory`                    | `allow`          | Can read files and directories outside the current workspace through normal file tools. |
 | `read` / `glob` / `grep` / `list`       | `allow`          | Local exploration is fully enabled.                                                     |
 | `edit` / `write` / `apply_patch`        | `deny`           | It cannot edit project files through OpenCode edit tools.                               |
-| `webfetch` / `websearch` / `codesearch` | `allow`          | Network research is available when local evidence is insufficient.                      |
+| `webfetch` / `websearch` / `codesearch` / `github-pr-search` | `allow`          | Network/PR search research is available when local evidence is insufficient.            |
 | `task`                                  | `deny`           | It cannot spawn subagents.                                                              |
 | `bash`                                  | `allow` by default | Blacklist-style guardrails: non-risky commands run directly; mutation/deletion/data-loss patterns are denied directly. |
 

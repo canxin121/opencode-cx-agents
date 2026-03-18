@@ -33,7 +33,7 @@ export default async function agentPack(_ctx) {
           "- Cite evidence: include absolute file paths (and line numbers when possible), key command outputs, and URLs used.\n" +
           "- If uncertain, say what is unknown and propose the next 1-3 local checks first.\n",
         permission: {
-          "*": "deny",
+          "*": "ask",
           doom_loop: "ask",
           external_directory: "allow",
           read: "allow",
@@ -43,12 +43,20 @@ export default async function agentPack(_ctx) {
           webfetch: "allow",
           websearch: "allow",
           codesearch: "allow",
+          "github-pr-search": "allow",
+          question: "deny",
           task: "deny",
           todowrite: "deny",
           todoread: "deny",
           plan_enter: "deny",
           plan_exit: "deny",
           edit: "deny",
+          apply_patch: "deny",
+          skill: "deny",
+          planpilot: "deny",
+          workbench: "deny",
+          web_preview_helper: "deny",
+          "github-triage": "deny",
           bash: {
             "*": "allow",
 
@@ -232,7 +240,6 @@ export default async function agentPack(_ctx) {
           "Output:\n" +
           "- Be concise. State what changed, why, and how to verify (commands to run).\n",
         permission: {
-          "*": "deny",
           doom_loop: "ask",
 
           external_directory: "deny",
@@ -591,7 +598,6 @@ export default async function agentPack(_ctx) {
           "Output:\n" +
           "- Be concise. State what changed, why, and how to verify (commands to run).\n",
         permission: {
-          "*": "deny",
           doom_loop: "ask",
 
           external_directory: "allow",
