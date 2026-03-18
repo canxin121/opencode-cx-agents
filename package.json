@@ -1,0 +1,10 @@
+{
+  "name": "opencode-cx-agents",
+  "version": "0.1.0",
+  "description": "OpenCode plugin that injects cx-explore/cx-work agents",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.js"
+  }
+}
